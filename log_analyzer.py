@@ -6,7 +6,7 @@ LOG_FILE = "sample_logs/authentication.log"
 
 # Number of failed attempts that will trigger an alert
 BRUTE_FORCE_THRESHOLD = 5
-
+OUTPUT_FILE = "security_report.csv"
 
 def read_logs(filename):
     """Read authentication events from a CSV-formatted log file."""
@@ -113,6 +113,37 @@ def display_report(results):
                 f"Account: {alert['username']}\n"
                 f"Failed Attempts: {alert['attempts']}\n"
             )
+def display_report(results):
+    # existing code above
+    ...
+
+
+def export_report(results, filename):
+    """Export detected security alerts to a CSV report."""
+
+    with open(filename, "w", newline="", encoding="utf-8") as file:
+        fieldnames = [
+            "severity",
+            "alert_type",
+            "source_ip",
+            "username",
+            "failed_attempts"
+        ]
+
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for alert in results["alerts"]:
+            writer.writerow({
+                "severity": alert["severity"],
+                "alert_type": alert["type"],
+                "source_ip": alert["source_ip"],
+                "username": alert["username"],
+                "failed_attempts": alert["attempts"]
+            })
+
+    print(f"\nSecurity report exported to: {filename}")
+
 
 
 def main():
@@ -126,6 +157,7 @@ def main():
 
     results = analyze_logs(events)
     display_report(results)
+    export_report(results, OUTPUT_FILE)
 
 
 if __name__ == "__main__":

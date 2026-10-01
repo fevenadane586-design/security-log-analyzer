@@ -1,0 +1,4 @@
+severity,alert_type,source_ip,username,failed_attempts
+HIGH,Successful login after repeated failures,192.168.1.25,admin,6
+HIGH,Possible brute-force activity,192.168.1.25,Multiple/Unknown,6
+HIGH,Possible brute-force activity,10.0.0.72,Multiple/Unknown,5
